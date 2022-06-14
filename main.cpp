@@ -5,22 +5,22 @@
 #include <iostream>
 #include "Document.h"
 
-Document* document_1 = new Document;
-Document* document_2 = new Document;
+Document* pDocument_1 = new Document;
+Document* pDocument_2 = new Document;
 
 float calculateCosineDistance();
 
-void thread_main(Document* doc)
+void thread_main(Document* pDoc)
 {
-	doc->inputPath();
-	doc->countFrequency();
-	doc->calculateSumOfSquares();
+	pDoc->inputPath();
+	pDoc->countFrequency();
+	pDoc->calculateSumOfSquares();
 }
 
 int main()
 {
-	thread thread_1(thread_main, document_1);
-	thread thread_2(thread_main, document_2);
+	thread thread_1(thread_main, pDocument_1);
+	thread thread_2(thread_main, pDocument_2);
 
 	if (thread_1.joinable())
 	{
@@ -37,15 +37,15 @@ int main()
 
 float calculateCosineDistance()
 {
-	unordered_map<string, int> map1 = document_1->copyFrequencyMap();
-	unordered_map<string, int> map2 = document_2->copyFrequencyMap();
+	unordered_map<string, int> map1 = pDocument_1->copyFrequencyMap();
+	unordered_map<string, int> map2 = pDocument_2->copyFrequencyMap();
 	if (map1.empty() || map2.empty())
 	{
 		cout << "There are document that do not contain any words" << endl;
 		exit(1);
 	}
-	unsigned int sum1 = document_1->copySumOfSquares();
-	unsigned int sum2 = document_2->copySumOfSquares();
+	unsigned int sum1 = pDocument_1->copySumOfSquares();
+	unsigned int sum2 = pDocument_2->copySumOfSquares();
 
 	unsigned int numerator = 0;
 	for (auto x : map1) {
@@ -56,8 +56,8 @@ float calculateCosineDistance()
 
 	map1.clear();
 	map2.clear();
-	delete document_1;
-	delete document_2;
+	delete pDocument_1;
+	delete pDocument_2;
 
 	float cos = (numerator * 1.00) / (sqrt(sum1 * sum2));
 	return acos(cos);
